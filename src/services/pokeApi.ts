@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { IPokemon } from '../interface/pokemonInterface';
-import { pokeapiUrl } from '../constants/constants';
+import { numberOfPokemon, pokeapiUrl } from '../constants/constants';
 
 export class FetchPokemon {
   public async getPokemonByNumbers(ids: number[]): Promise<IPokemon[]> {
@@ -21,7 +21,7 @@ export class FetchPokemon {
 }
 
 export async function executeFetch(): Promise<IPokemon[]> {
-  const ids = Array.from({ length: 151 }, (_, i) => i + 1);
+  const ids = Array.from({ length: numberOfPokemon }, (_, i) => i + 1);
   const pokemonData = await new FetchPokemon().getPokemonByNumbers(ids);
   return pokemonData;
 }

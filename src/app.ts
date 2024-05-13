@@ -1,13 +1,10 @@
 import { PrismaClient } from '@prisma/client';
-import { executeFetch } from './pokeApi';
 
 const prisma = new PrismaClient();
 
 async function main() {
-  const pokemon = await prisma.pokemon.createMany({
-    data: await executeFetch(),
-  });
-  console.log(pokemon);
+  const users = await prisma.pokemon.findMany();
+  console.log(users);
 }
 
 main()
