@@ -5,15 +5,25 @@ import { pokeapiUrl } from '../constants/constants';
 export class FetchPokemon {
   public async getPokemonByNumbers(ids: number[]): Promise<IPokemon[]> {
     const promises = ids.map((id) => axios(`${pokeapiUrl}${id}`));
+
     const responses = await Promise.all(promises);
-    return responses.map((response) => response.data.id);
+
+    const pokemon: IPokemon[] = responses.map((response) => {
+      return {
+        number: response.data.id,
+        name: response.data.name,
+        sprite: response.data.sprites.front_default,
+      };
+    });
+
+    return pokemon;
   }
 }
 
-async function executeFetch() {
-  const fetchPokemon = new FetchPokemon();
-  const pokemons = await fetchPokemon.getPokemonByNumbers(Array.from({ length: 151 }, (_, i) => i + 1));
-  pokemons.forEach((pokemon) => console.log(pokemon));
+export async function executeFetch(): Promise<IPokemon[]> {
+  const ids = Array.from({ length: 151 }, (_, i) => i + 1);
+  const pokemonData = await new FetchPokemon().getPokemonByNumbers(ids);
+  return pokemonData;
 }
 
 console.log(executeFetch());
